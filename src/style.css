@@ -1,15 +1,16 @@
 html, body {
-  min-height: 100vh;
-  margin: 0;
+    min-height: 100vh;
+    margin: 0;
 }
 
 body {
-  display: flex;
-  background-color: black;
-  color: white;
+    display: flex;
+    background-color: black;
+    color: white;
 }
 
 #chart {
-  display: flex;
-  flex-grow: 1;
+    display: flex;
+    flex-grow: 1;
+
 }
