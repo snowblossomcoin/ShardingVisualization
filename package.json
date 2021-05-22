@@ -1,0 +1,36 @@
+{
+  "name": "sharding-visualization",
+  "version": "1.0.0",
+  "description": "A blockchain sharding visualization.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/snowblossomcoin/ShardingVisualization.git"
+  },
+  "keywords": [
+    "blockchain",
+    "blocks",
+    "sharding",
+    "shards",
+    "braid",
+    "visualization",
+    "cryptocurrency",
+    "crypto",
+    "snowblossom",
+    "snowblossomcoin",
+    "d3",
+    "graph"
+  ],
+  "author": "ZacharyACoon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/snowblossomcoin/ShardingVisualization/issues"
+  },
+  "homepage": "https://github.com/snowblossomcoin/ShardingVisualization#readme",
+  "dependencies": {
+    "d3": "^6.7.0"
+  }
+}
