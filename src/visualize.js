@@ -45,8 +45,7 @@ export default function visualize( data_uri ) {
         let color_index = i => d3.interpolateRainbow((1/max_shard) * i);
         let y = d3.scaleLinear().domain([0, max_shard]).range([h()-100, 100]);
         let axis_y = d3.axisLeft(y)
-            .tickValues(d3.range(1, max_shard + 1, 1))
-            .ticks(max_shard)
+            .ticks(d3.tickIncrement(1, max_shard, 1))
             .tickFormat(d3.format('d'));
         let axis_y_draw = g.append("g").attr("class", "scale_y")
             .attr("transform", `translate(${w() * 0.05}, 0)`)
