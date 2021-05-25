@@ -130,18 +130,15 @@ export default function visualize( data_uri ) {
                         .style("fill", "white")
                         .style("stroke", "black");
 
-                    links
-                        .style("stroke", l => (l.source === node.id) ? "white" : `url(#${color_ref(l)})`)
-                        .style("stroke-opacity", l => (l.source === node.id) ? 1 : 0.5)
-                        .style("z-index", 1)
-                        .sort(l => l.source === node.id ? 1 : -1)
-
+                    links.filter(l => l.source === node.id)
+                        .style("stroke", "white")
+                        .style("stroke-opacity", 1);
                 })
-                .on("mouseout", (event, d) => {
+                .on("mouseout", (event, node) => {
                     d3.select(event.target)
                         .style("fill", a => color_index(a.shard))
                         .style("stroke", "white");
-                    links
+                    links.filter(l => l.source === node.id)
                         .style("stroke", l => `url(#${color_ref(l)})`)
                         .style("stroke-opacity", 0.5)
                 })
