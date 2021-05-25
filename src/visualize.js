@@ -50,7 +50,7 @@ export default sampleFile => {
         let axis_y_draw = g.append("g").attr("class", "scale_y")
             .attr("transform", `translate(${w() * 0.05}, 0)`)
             .call(axis_y);
-        axis_x_draw.append("text").attr("transform", `translate(${-w() * 0.033}, ${h() / 2})`)
+        axis_y_draw.append("text").attr("transform", `translate(${-w() * 0.033}, ${h() / 2})`)
             .attr("fill", "currentColor")
             .style("text-anchor", "middle")
             .text("Shard");
