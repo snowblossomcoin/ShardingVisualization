@@ -2,8 +2,8 @@ import * as d3 from 'd3';
 
 console.log(d3);
 
-export default sampleFile => {
-    d3.json(sampleFile).then(data => {
+export default function visualize( data_uri ) {
+    d3.json(data_uri).then(data => {
         // cleanup java's millisecond timestamps
         data.nodes = data.nodes.map(n => {n.timestamp /= 1000; return n});
 
