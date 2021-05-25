@@ -65,7 +65,7 @@ export default function visualize( data_uri ) {
             .attr("x2", n => x(n.timestamp))
             .attr("y2", h() - h() * 0.05)
             .style("stroke", "white")
-            .style("stroke-opacity", 0.1)
+            .style("stroke-opacity", 0.25)
             .style("stroke-dasharray", "1");
 
 
@@ -123,7 +123,7 @@ export default function visualize( data_uri ) {
                 .attr("cx", n => x(n.timestamp))
                 .attr("cy", n => y(n.shard))
                 .style("fill", n => color_index(n.shard))
-                .style("r", 4)
+                .attr("r", 4)
                 .style("stroke", "#ffffffaf")
                 .on("mouseover", (event, node) => {
                     d3.select(event.target)
@@ -165,7 +165,8 @@ export default function visualize( data_uri ) {
                         .attr("y2", d => ny(n(d.target).shard));
                     nodes
                         .attr("cx", d => nx(d.timestamp))
-                        .attr("cy", d => ny(d.shard));
+                        .attr("cy", d => ny(d.shard))
+                        .attr("r", transform.k / 2 + 4);
                     gridlines_x
                         .attr("x1", n => nx(n.timestamp))
                         .attr("y1", n => ny(n.shard))
