@@ -87,7 +87,7 @@ export default function visualize( data_uri ) {
                         .style("stroke-opacity", 1)
                 })
                 .on("mouseout", (event, d) => {
-                    let link_doms = d3.select(event.target)
+                    let link_doms = d3.select(event.target);
                     link_doms
                         .style("stroke", l => `url(#${color_ref(l)})`)
                         .style("stroke-opacity", 0.5)
@@ -147,7 +147,7 @@ export default function visualize( data_uri ) {
                 })
                 .on("click", (event, d) => {
                     info.text(JSON.stringify(d))
-                })
+                });
 
         function resizeViewBox() {
             svg.attr("viewBox", `0 0 ${w()} ${h()}`);
