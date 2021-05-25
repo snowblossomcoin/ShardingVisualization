@@ -42,7 +42,7 @@ export default function visualize( data_uri ) {
     // scale y
         let max_shard = Math.max(...data.nodes.map(d => d.shard));
         // let color_index = (i) => `hsl(${360 / max_shard * i}, 100%, 50%)`;
-        let color_index = i => d3.interpolateRainbow((1/max_shard) * i)
+        let color_index = i => d3.interpolateRainbow((1/max_shard) * i);
         let y = d3.scaleLinear().domain([max_shard, 0]).range([100, h() - 100]);
         let axis_y = d3.axisLeft(y)
             .tickValues([...Array(max_shard).keys()].map(i => i+1))
