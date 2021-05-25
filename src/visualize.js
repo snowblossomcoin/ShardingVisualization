@@ -31,10 +31,10 @@ export default function visualize( data_uri ) {
         let x = d3.scaleLinear().domain([min_timestamp, max_timestamp]).range([150, w() - 100]);
         let axis_x = d3.axisBottom(x);
         let axis_x_draw = g.append("g").attr("class", "scale_x")
-            .attr("transform", `translate(0, ${h() - h() * 0.05})`)
+            .attr("transform", `translate(0, ${h() - 100})`)
             .call(axis_x);
         axis_x_draw.append("text").text("Timestamp")
-                .attr("transform", `translate(${w() / 2}, ${h() * 0.033})`)
+                .attr("transform", `translate(${w() / 2}, 50)`)
                 .attr("fill", "currentColor")
                 .style("text-anchor", "middle");
 
@@ -43,9 +43,10 @@ export default function visualize( data_uri ) {
         let max_shard = Math.max(...data.nodes.map(d => d.shard));
         // let color_index = (i) => `hsl(${360 / max_shard * i}, 100%, 50%)`;
         let color_index = i => d3.interpolateRainbow((1/max_shard) * i);
-        let y = d3.scaleLinear().domain([max_shard, 0]).range([100, h() - 100]);
+        let y = d3.scaleLinear().domain([0, max_shard]).range([h()-100, 100]);
         let axis_y = d3.axisLeft(y)
-            .tickValues([...Array(max_shard).keys()].map(i => i+1))
+            .tickValues(d3.range(1, max_shard + 1, 1))
+            .ticks(max_shard)
             .tickFormat(d3.format('d'));
         let axis_y_draw = g.append("g").attr("class", "scale_y")
             .attr("transform", `translate(${w() * 0.05}, 0)`)
@@ -57,13 +58,13 @@ export default function visualize( data_uri ) {
 
 
         // gridlines x
-        let gridlines_x = g.append("g").attr("class", "gridlines_X")
+        let gridlines_x = g.append("g").attr("class", "gridlines_x")
             .selectAll("line").data(data.nodes).enter()
             .append("line")
             .attr("x1", n => x(n.timestamp))
             .attr("y1", n => y(n.shard))
             .attr("x2", n => x(n.timestamp))
-            .attr("y2", h() - h() * 0.05)
+            .attr("y2", h() - 100)
             .style("stroke", "white")
             .style("stroke-opacity", 0.25)
             .style("stroke-dasharray", "1");
@@ -171,12 +172,12 @@ export default function visualize( data_uri ) {
                         .attr("x1", n => nx(n.timestamp))
                         .attr("y1", n => ny(n.shard))
                         .attr("x2", n => nx(n.timestamp))
-                        .attr("y2", h() - h() * 0.05);
+                        .attr("y2", h() - 100);
 
                     axis_x.scale(nx);
                     axis_x_draw
                         .call(axis_x)
-                        .attr("transform", `translate(0, ${h() - h() * 0.05})`);
+                        .attr("transform", `translate(0, ${h() - 100})`);
                     axis_y.scale(ny);
                     axis_y_draw.call(axis_y);
                 }));
