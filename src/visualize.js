@@ -14,7 +14,7 @@ export default function visualize( data_uri ) {
         let g = svg.append("g").attr("class", "graph");
 
 
-    // title
+        // title
         g.append("g").attr("class", "title")
             .append("text")
             .text("Blocks by Shard over Time")
@@ -25,7 +25,7 @@ export default function visualize( data_uri ) {
             .style("text-decoration", "underline");
 
 
-    // scale x
+        // scale x
         let min_timestamp = Math.min(...data.nodes.map(d => d.timestamp));
         let max_timestamp = Math.max(...data.nodes.map(d => d.timestamp));
         let x = d3.scaleLinear().domain([min_timestamp, max_timestamp]).range([150, w() - 100]);
@@ -39,7 +39,7 @@ export default function visualize( data_uri ) {
                 .style("text-anchor", "middle");
 
 
-    // scale y
+        // scale y
         let max_shard = Math.max(...data.nodes.map(d => d.shard));
         // let color_index = (i) => `hsl(${360 / max_shard * i}, 100%, 50%)`;
         let color_index = i => d3.interpolateRainbow((1/max_shard) * i);
@@ -56,7 +56,7 @@ export default function visualize( data_uri ) {
             .text("Shard");
 
 
-    // gridlines x
+        // gridlines x
         let gridlines_x = g.append("g").attr("class", "gridlines_X")
             .selectAll("line").data(data.nodes).enter()
             .append("line")
@@ -107,7 +107,7 @@ export default function visualize( data_uri ) {
                 selection.append("stop").attr("stop-color", l => color_index(n(l.target).shard)).attr("offset", 1);
             });
 
-    // block info
+        // block info
         let info = container.append("div").attr("class", "info")
             .style("position", "absolute")
             .style("padding", "1em")
@@ -116,7 +116,7 @@ export default function visualize( data_uri ) {
             .text("<click_node_to_get_data>");
 
 
-    // nodes
+        // nodes
         let nodes = g.append("g").attr("class", "nodes")
             .selectAll("circle").data(data.nodes).enter()
             .append("circle")
