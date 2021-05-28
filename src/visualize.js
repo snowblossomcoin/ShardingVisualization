@@ -34,7 +34,7 @@ export default function visualize( data_uri ) {
         let axis_x_draw = g.append("g").attr("class", "scale_x")
             .attr("transform", `translate(0, ${h() - 100})`)
             .call(axis_x);
-        axis_x_draw.append("text").text("Timestamp")
+        let axis_x_label = axis_x_draw.append("text").text("Timestamp")
                 .attr("transform", `translate(${w() / 2}, 50)`)
                 .attr("fill", "currentColor")
                 .style("text-anchor", "middle");
@@ -51,7 +51,7 @@ export default function visualize( data_uri ) {
         let axis_y_draw = g.append("g").attr("class", "scale_y")
             .attr("transform", `translate(100, 0)`)
             .call(axis_y);
-        axis_y_draw.append("text").attr("transform", `translate(${-w() * 0.033}, ${h() / 2})`)
+        let axis_y_label = axis_y_draw.append("text").attr("transform", `translate(${-w() * 0.033}, ${h() / 2})`)
             .attr("fill", "currentColor")
             .style("text-anchor", "middle")
             .text("Shard");
@@ -146,7 +146,6 @@ export default function visualize( data_uri ) {
                 });
 
         function zoom({transform}) {
-            console.log(transform);
             let nx = transform.rescaleX(x);
             let ny = transform.rescaleY(y);
             links
@@ -182,13 +181,18 @@ export default function visualize( data_uri ) {
                 .attr("transform", `translate(100, 0)`);
         }
 
-        function resizeViewBox() {
+        function resizeWindow() {
             svg.attr("viewBox", `0 0 ${w()} ${h()}`);
+            // re-assign zoom callback
             svg.call(d3.zoom().extent([[0, 0], [w(), h()]]).scaleExtent([0.25, 100]).on("zoom", zoom));
             zoom({transform: d3.zoomTransform(svg)});
+
+            axis_x_label.attr("transform", `translate(${w() / 2}, 50)`);
+            axis_y_label.attr("transform", `translate(${-w() * 0.033}, ${h() / 2})`);
+
         }
 
-        resizeViewBox();
-        window.addEventListener('resize', resizeViewBox);
+        resizeWindow();
+        window.addEventListener('resize', resizeWindow);
     });
 }
