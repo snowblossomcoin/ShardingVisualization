@@ -1,7 +1,5 @@
 import * as d3 from 'd3';
 
-console.log(d3);
-
 export default function visualize( data_uri ) {
     d3.json(data_uri).then(data => {
         // cleanup java's millisecond timestamps
@@ -178,7 +176,10 @@ export default function visualize( data_uri ) {
                         .call(axis_x)
                         .attr("transform", `translate(0, ${h() - 100})`);
                     axis_y.scale(ny);
-                    axis_y_draw.call(axis_y);
+                    axis_y_draw
+                        .call(axis_y)
+                        .attr("transform", `tanslate(${w()/2}, 100`)
+                    ;
                 }));
         }
 

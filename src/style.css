@@ -7,10 +7,10 @@ body {
     display: flex;
     background-color: black;
     color: white;
+    max-height: 100vh;
 }
 
 #chart {
     display: flex;
     flex-grow: 1;
-
 }
