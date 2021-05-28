@@ -4,7 +4,7 @@
   "description": "A blockchain sharding visualization.",
   "main": "index.html",
   "scripts": {
-    "start": "webpack serve",
+    "serve": "webpack serve",
     "build": "webpack"
   },
   "repository": {
