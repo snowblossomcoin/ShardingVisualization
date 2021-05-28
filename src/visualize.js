@@ -10,6 +10,8 @@ export default function visualize( data_uri ) {
         let h = () => container.node().clientHeight;
         let svg = container.append("svg");
         let g = svg.append("g").attr("class", "graph");
+        let n = (i) => data.nodes[i - 1];
+        let color_ref = (l) => `s${l.source}t${l.target}`;
 
 
         // title
@@ -46,7 +48,7 @@ export default function visualize( data_uri ) {
             .ticks(d3.tickIncrement(1, max_shard, 1))
             .tickFormat(d3.format('d'));
         let axis_y_draw = g.append("g").attr("class", "scale_y")
-            .attr("transform", `translate(${w() * 0.05}, 0)`)
+            .attr("transform", `translate(100, 0)`)
             .call(axis_y);
         axis_y_draw.append("text").attr("transform", `translate(${-w() * 0.033}, ${h() / 2})`)
             .attr("fill", "currentColor")
@@ -58,27 +60,25 @@ export default function visualize( data_uri ) {
         let gridlines_x = g.append("g").attr("class", "gridlines_x")
             .selectAll("line").data(data.nodes).enter()
             .append("line")
-            .attr("x1", n => x(n.timestamp))
-            .attr("y1", n => y(n.shard))
-            .attr("x2", n => x(n.timestamp))
+            .attr("x1", d => x(d.timestamp))
+            .attr("y1", d => y(d.shard))
+            .attr("x2", d => x(d.timestamp))
             .attr("y2", h() - 100)
-            .style("stroke", "white")
+            .style("stroke", d => color_index(n(d.id).shard))
             .style("stroke-opacity", 0.25)
             .style("stroke-dasharray", "1");
 
 
         // links
-        let n = (i) => data.nodes[i - 1];
-        let color_ref = (l) => `s${l.source}t${l.target}`;
         let links = g.append("g").attr("class", "links").selectAll("line").data(data.links).enter()
             .append("line")
-                .attr("x1", l => x(n(l.source).timestamp))
-                .attr("y1", l => y(n(l.source).shard))
-                .attr("x2", l => x(n(l.target).timestamp))
-                .attr("y2", l => y(n(l.target).shard))
+                .attr("x1", d => x(n(d.source).timestamp))
+                .attr("y1", d => y(n(d.source).shard))
+                .attr("x2", d => x(n(d.target).timestamp))
+                .attr("y2", d => y(n(d.target).shard))
                 .style("stroke-width", 2)
                 .style("stroke-opacity", 0.5)
-                .style("stroke", l => `url(#${color_ref(l)})`)
+                .style("stroke", d => `url(#${color_ref(d)})`)
                 .on("mouseover", (event, link) => {
                     d3.select(event.target)
                         .style("stroke", "white")
@@ -87,18 +87,18 @@ export default function visualize( data_uri ) {
                 .on("mouseout", (event, d) => {
                     let link_doms = d3.select(event.target);
                     link_doms
-                        .style("stroke", l => `url(#${color_ref(l)})`)
+                        .style("stroke", d => `url(#${color_ref(d)})`)
                         .style("stroke-opacity", 0.5)
                 });
 
         // gradients
         let gradients = g.select(".links").append("defs").selectAll("linearGradient").data(data.links).enter()
             .append("linearGradient")
-            .attr("id", l => color_ref(l))
-            .attr("x1", l => x(n(l.source).timestamp))
-            .attr("y1", l => y(n(l.source).shard))
-            .attr("x2", l => x(n(l.target).timestamp))
-            .attr("y2", l => y(n(l.target).shard))
+            .attr("id", d => color_ref(d))
+            .attr("x1", d => x(n(d.source).timestamp))
+            .attr("y1", d => y(n(d.source).shard))
+            .attr("x2", d => x(n(d.target).timestamp))
+            .attr("y2", d => y(n(d.target).shard))
             .attr("gradientUnits", "userSpaceOnUse")
             .call(selection => {
                 selection.append("stop").attr("stop-color", l => color_index(n(l.source).shard)).attr("offset", 0);
@@ -118,9 +118,9 @@ export default function visualize( data_uri ) {
         let nodes = g.append("g").attr("class", "nodes")
             .selectAll("circle").data(data.nodes).enter()
             .append("circle")
-                .attr("cx", n => x(n.timestamp))
-                .attr("cy", n => y(n.shard))
-                .style("fill", n => color_index(n.shard))
+                .attr("cx", d => x(d.timestamp))
+                .attr("cy", d => y(d.shard))
+                .style("fill", d => color_index(d.shard))
                 .attr("r", 4)
                 .style("stroke", "#ffffffaf")
                 .on("mouseover", (event, node) => {
@@ -134,9 +134,9 @@ export default function visualize( data_uri ) {
                 })
                 .on("mouseout", (event, node) => {
                     d3.select(event.target)
-                        .style("fill", a => color_index(a.shard))
+                        .style("fill", d => color_index(d.shard))
                         .style("stroke", "white");
-                    links.filter(l => l.source === node.id)
+                    links.filter(d => d.source === node.id)
                         .style("stroke", l => `url(#${color_ref(l)})`)
                         .style("stroke-opacity", 0.5)
                 })
@@ -150,7 +150,6 @@ export default function visualize( data_uri ) {
                 .on("zoom", ({transform}) => {
                     let nx = transform.rescaleX(x);
                     let ny = transform.rescaleY(y);
-                    let n = (i) => data.nodes[i - 1];
                     links
                         .attr("x1", d => nx(n(d.source).timestamp))
                         .attr("y1", d => ny(n(d.source).shard))
@@ -166,9 +165,9 @@ export default function visualize( data_uri ) {
                         .attr("cy", d => ny(d.shard))
                         .attr("r", transform.k / 2 + 4);
                     gridlines_x
-                        .attr("x1", n => nx(n.timestamp))
-                        .attr("y1", n => ny(n.shard))
-                        .attr("x2", n => nx(n.timestamp))
+                        .attr("x1", d => nx(d.timestamp))
+                        .attr("y1", d => ny(d.shard))
+                        .attr("x2", d => nx(d.timestamp))
                         .attr("y2", h() - 100);
 
                     axis_x.scale(nx);
@@ -178,7 +177,7 @@ export default function visualize( data_uri ) {
                     axis_y.scale(ny);
                     axis_y_draw
                         .call(axis_y)
-                        .attr("transform", `tanslate(${w()/2}, 100`)
+                        .attr("transform", `translate(100, 0)`)
                     ;
                 }));
         }
