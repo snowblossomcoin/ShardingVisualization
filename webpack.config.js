@@ -1,14 +1,14 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin'); 
+const webpack = require("webpack");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 const path = require('path');
 
-const env = process.env.NODE_ENV || 'development';
 
 module.exports = {
-    mode: env,
-    entry: './src/index.js',
+    mode: process.env.NODE_ENV,
+    entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'main.js',
+        filename: 'index.js',
     },
     module: {
         rules: [
@@ -23,7 +23,8 @@ module.exports = {
         ]
     },
     plugins: [
-        new HtmlWebpackPlugin({ template: './src/index.html' })
+        new webpack.DefinePlugin({ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || "production")}),
+        new HtmlWebpackPlugin({ template: './src/index.html' }),
     ],
     devServer: {
         contentBase: './dist',

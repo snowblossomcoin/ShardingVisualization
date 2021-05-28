@@ -1,5 +1,7 @@
-import renderSample from './visualize.js'
 import './style.css'
-import sample from './sample.json'
+import render from './visualize.js'
+import sample from "./sample"
 
-renderSample(sample);
+
+console.log(ENVIRONMENT);
+render(ENVIRONMENT === "development" ? sample : "/api/recent_json_graph");
