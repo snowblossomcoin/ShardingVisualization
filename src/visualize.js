@@ -5,7 +5,8 @@ export default function visualize( data_uri ) {
         // cleanup java's millisecond timestamps
         data.nodes = data.nodes.map(n => {n.timestamp /= 1000; return n});
 
-        let container = d3.select("body");
+        let container = d3.select("#chart")
+            .style("overflow", "hidden");
         let w = () => container.node().clientWidth;
         let h = () => container.node().clientHeight;
         let svg = container.append("svg");
@@ -144,46 +145,50 @@ export default function visualize( data_uri ) {
                     info.text(JSON.stringify(d))
                 });
 
+        function zoom({transform}) {
+            console.log(transform);
+            let nx = transform.rescaleX(x);
+            let ny = transform.rescaleY(y);
+            links
+                .attr("x1", d => nx(n(d.source).timestamp))
+                .attr("y1", d => ny(n(d.source).shard))
+                .attr("x2", d => nx(n(d.target).timestamp))
+                .attr("y2", d => ny(n(d.target).shard));
+            gradients
+                .attr("x1", d => nx(n(d.source).timestamp))
+                .attr("y1", d => ny(n(d.source).shard))
+                .attr("x2", d => nx(n(d.target).timestamp))
+                .attr("y2", d => ny(n(d.target).shard));
+            nodes
+                .attr("cx", d => nx(d.timestamp))
+                .attr("cy", d => ny(d.shard))
+                .attr("r", transform.k / 2 + 4);
+            gridlines_x
+                .attr("x1", d => nx(d.timestamp))
+                .attr("y1", d => ny(d.shard))
+                .attr("x2", d => nx(d.timestamp))
+                .attr("y2", h() - 100);
+
+            nx.range([150, w() - 100]);
+            axis_x.scale(nx);
+            axis_x_draw
+                .call(axis_x)
+                .attr("transform", `translate(0, ${h() - 100})`);
+
+            ny.range([h()-100, 100]);
+            axis_y.scale(ny);
+            axis_y_draw
+                .call(axis_y)
+                .attr("transform", `translate(100, 0)`);
+        }
+
         function resizeViewBox() {
             svg.attr("viewBox", `0 0 ${w()} ${h()}`);
-            svg.call(d3.zoom().extent([[0, 0], [w(), h()]]).scaleExtent([0.25, 100])
-                .on("zoom", ({transform}) => {
-                    let nx = transform.rescaleX(x);
-                    let ny = transform.rescaleY(y);
-                    links
-                        .attr("x1", d => nx(n(d.source).timestamp))
-                        .attr("y1", d => ny(n(d.source).shard))
-                        .attr("x2", d => nx(n(d.target).timestamp))
-                        .attr("y2", d => ny(n(d.target).shard));
-                    gradients
-                        .attr("x1", d => nx(n(d.source).timestamp))
-                        .attr("y1", d => ny(n(d.source).shard))
-                        .attr("x2", d => nx(n(d.target).timestamp))
-                        .attr("y2", d => ny(n(d.target).shard));
-                    nodes
-                        .attr("cx", d => nx(d.timestamp))
-                        .attr("cy", d => ny(d.shard))
-                        .attr("r", transform.k / 2 + 4);
-                    gridlines_x
-                        .attr("x1", d => nx(d.timestamp))
-                        .attr("y1", d => ny(d.shard))
-                        .attr("x2", d => nx(d.timestamp))
-                        .attr("y2", h() - 100);
-
-                    axis_x.scale(nx);
-                    axis_x_draw
-                        .call(axis_x)
-                        .attr("transform", `translate(0, ${h() - 100})`);
-
-                    axis_y.scale(ny);
-                    axis_y_draw
-                        .call(axis_y)
-                        .attr("transform", `translate(100, 0)`);
-                }));
+            svg.call(d3.zoom().extent([[0, 0], [w(), h()]]).scaleExtent([0.25, 100]).on("zoom", zoom));
+            zoom({transform: d3.zoomTransform(svg)});
         }
 
         resizeViewBox();
         window.addEventListener('resize', resizeViewBox);
-
     });
 }

@@ -2,12 +2,15 @@
 
 The goal of this project is to visualize a braided chain of blocks over time, and their relationships.
 
+
 ## Features
 
 * Pan & Zoom
 * Scrolling Axes
 * Mouseover for highlight
 * Click for info
+* Window/Div  Resizing
+
 
 ## Running
 
