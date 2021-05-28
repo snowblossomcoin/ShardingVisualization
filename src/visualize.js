@@ -174,11 +174,11 @@ export default function visualize( data_uri ) {
                     axis_x_draw
                         .call(axis_x)
                         .attr("transform", `translate(0, ${h() - 100})`);
+
                     axis_y.scale(ny);
                     axis_y_draw
                         .call(axis_y)
-                        .attr("transform", `translate(100, 0)`)
-                    ;
+                        .attr("transform", `translate(100, 0)`);
                 }));
         }
 
