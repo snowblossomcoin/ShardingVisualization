@@ -5,12 +5,14 @@ The goal of this project is to visualize a braided chain of blocks over time, an
 
 ## Features
 
-* Pan & Zoom
-* Scrolling Axes
 * Mouseover for highlight
 * Click for info
-* Window/Div  Resizing
 
+## Coming Features
+* Scrolling Axes
+* Pan & Zoom
+* Window/Div Resizing
+* Automatic updates
 
 ## Running
 
