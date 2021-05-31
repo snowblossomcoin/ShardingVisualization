@@ -19,7 +19,11 @@ module.exports = {
             {
                 test: /sample\.json/,
                 type: 'asset/resource'
-            }
+            },
+            {
+                test: /sample2\.json/,
+                type: 'asset/resource'
+            },
         ]
     },
     plugins: [

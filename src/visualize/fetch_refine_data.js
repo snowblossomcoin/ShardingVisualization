@@ -1,9 +1,8 @@
 import * as d3 from "d3";
 
 
-export default function fetch_refine_data(uri, callback, data=null) {
+export default function fetch_refine_data(uri, data, callback) {
     console.log("fetch_refine_data");
-    data = data || {};
     !data.nodes ? data.nodes = {} : null;
     !data.links ? data.links = {} : null;
 
@@ -29,7 +28,8 @@ export default function fetch_refine_data(uri, callback, data=null) {
         Object.values(data.nodes).forEach(n => {
             if (n.timestamp < data.min_timestamp) {
                 data.min_timestamp = n.timestamp;
-            } else if (n.timestamp > data.max_timestamp) {
+            }
+            if (n.timestamp > data.max_timestamp) {
                 data.max_timestamp = n.timestamp;
             }
             if (n.shard > data.max_shard) {
