@@ -8,8 +8,8 @@ module.exports = {
     mode: process.env.NODE_ENV,
     entry: "./src/index.js",
     output: {
-        path: path.resolve(__dirname, 'dist'),
-        filename: 'shard-visual.js',
+        path: path.resolve(__dirname, "dist"),
+        filename: "shard-visual.js",
     },
     module: {
         rules: [
@@ -29,11 +29,14 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || "production")}),
-        new HtmlWebpackPlugin({ template: './src/shard-visual.html' }),
+        new HtmlWebpackPlugin({
+            template: "./src/shard-visual.html",
+            filename: "shard-visual.html",
+        }),
         new BeautifyHtmlWebpackPlugin(),
     ],
     devServer: {
-        contentBase: './dist',
+        contentBase: "./dist",
         host: "0.0.0.0",
         port: 9000,
     }
