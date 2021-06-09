@@ -23,7 +23,10 @@ The goal of this project is to visualize a braided chain of blocks over time, an
 2. clone project
 3. npm install .
 4. run dev server with `npm run serve`
-5. build to dist/ with `npm run build` (builds in ./dist)
+5. build to dist/
+
+    * `npm run build` - uses api endpoint
+    * `npm run build-sample` - uses sample file
 
 
 ### Docker
