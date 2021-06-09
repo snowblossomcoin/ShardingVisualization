@@ -42,9 +42,9 @@ export default function update_chart(dom, meta, data, depth=false) {
         .style("stroke-dasharray", "1");
 
     dom.gridlines_x.selectAll("line")
-        .attr("x1", d => x(d.timestamp))
-        .attr("y1", d => y(d.shard))
-        .attr("x2", d => x(d.timestamp))
+        .attr("x1", d => x(d.timestamp).toFixed(1))
+        .attr("y1", d => y(d.shard).toFixed(1))
+        .attr("x2", d => x(d.timestamp).toFixed(1))
         .attr("y2", h-pad);
 
 
@@ -60,10 +60,10 @@ export default function update_chart(dom, meta, data, depth=false) {
         });
 
     dom.gradient_defs.selectAll("linearGradient")
-        .attr("x1", d => x(data.nodes[d.source].timestamp))
-        .attr("y1", d => y(data.nodes[d.source].shard))
-        .attr("x2", d => x(data.nodes[d.target].timestamp))
-        .attr("y2", d => y(data.nodes[d.target].shard));
+        .attr("x1", d => x(data.nodes[d.source].timestamp).toFixed(1))
+        .attr("y1", d => y(data.nodes[d.source].shard).toFixed(1))
+        .attr("x2", d => x(data.nodes[d.target].timestamp).toFixed(1))
+        .attr("y2", d => y(data.nodes[d.target].shard).toFixed(1));
 
 
     // links
@@ -85,10 +85,10 @@ export default function update_chart(dom, meta, data, depth=false) {
         });
 
     dom.links.selectAll("line")
-        .attr("x1", d => x(data.nodes[d.source].timestamp))
-        .attr("y1", d => y(data.nodes[d.source].shard))
-        .attr("x2", d => x(data.nodes[d.target].timestamp))
-        .attr("y2", d => y(data.nodes[d.target].shard));
+        .attr("x1", d => x(data.nodes[d.source].timestamp).toFixed(1))
+        .attr("y1", d => y(data.nodes[d.source].shard).toFixed(1))
+        .attr("x2", d => x(data.nodes[d.target].timestamp).toFixed(1))
+        .attr("y2", d => y(data.nodes[d.target].shard).toFixed(1));
 
 
     // nodes
@@ -129,8 +129,8 @@ export default function update_chart(dom, meta, data, depth=false) {
         });
 
     dom.nodes.selectAll("circle")
-        .attr("cx", d => x(d.timestamp))
-        .attr("cy", d => y(d.shard))
+        .attr("cx", d => x(d.timestamp).toFixed(1))
+        .attr("cy", d => y(d.shard).toFixed(1))
         .attr("r", d => meta.transform.k/2+4);
 
 
