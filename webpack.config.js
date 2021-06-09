@@ -1,5 +1,6 @@
 const webpack = require("webpack");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const BeautifyHtmlWebpackPlugin = require('beautify-html-webpack-plugin');
 const path = require('path');
 
 
@@ -8,7 +9,7 @@ module.exports = {
     entry: "./src/index.js",
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'index.js',
+        filename: 'shard-visual.js',
     },
     module: {
         rules: [
@@ -17,7 +18,7 @@ module.exports = {
                 use: ["style-loader", "css-loader"],
             },
             {
-                test: /sample\.json/,
+                test: /sample1\.json/,
                 type: 'asset/resource'
             },
             {
@@ -28,7 +29,8 @@ module.exports = {
     },
     plugins: [
         new webpack.DefinePlugin({ENVIRONMENT: JSON.stringify(process.env.NODE_ENV || "production")}),
-        new HtmlWebpackPlugin({ template: './src/index.html' }),
+        new HtmlWebpackPlugin({ template: './src/shard-visual.html' }),
+        new BeautifyHtmlWebpackPlugin(),
     ],
     devServer: {
         contentBase: './dist',
