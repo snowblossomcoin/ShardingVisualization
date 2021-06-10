@@ -6,11 +6,16 @@ const pad = 100;
 
 export default function update_chart(dom, meta, data, depth=false) {
     console.log("update_chart");
-    const {clientWidth: w, clientHeight: h} = dom.container.node();
+
+    const color_index = i => d3.interpolateRainbow(1/data.max_shard * i);
+    const gradient_name = l => `${l.source.slice(-4)}${l.target.slice(-4)}`;
 
     meta.transform = meta.transform || d3.zoomTransform(dom.svg);
+    const {clientWidth: w, clientHeight: h} = dom.container.node();
+
 
     dom.title.attr("transform", `translate(${w/2}, ${pad/2})`);
+
 
     // scale_x
     const x = meta.x = meta.transform.rescaleX(
@@ -31,9 +36,8 @@ export default function update_chart(dom, meta, data, depth=false) {
     dom.axis_y_label.attr("transform", `translate(${-pad/2}, ${h/2})`);
     meta.axis_y = d3.axisLeft(y).ticks().tickFormat(d => Math.floor(d) === d ? d : "");
     dom.axis_y.call(meta.axis_y);
-
-
-    const color_index = i => d3.interpolateRainbow(1/data.max_shard * i);
+    dom.axis_y.selectAll(".tick > text").style("color", d => color_index(d));
+    // dom.axis_y.selectAll(".tick > text").attr(d => console.log(d));
 
     // gridlines_x
     dom.gridlines_x.selectAll("line").data(Object.values(data.nodes)).enter().append("line")
@@ -48,7 +52,6 @@ export default function update_chart(dom, meta, data, depth=false) {
         .attr("y2", h-pad);
 
 
-    const gradient_name = l => `${l.source.slice(-4)}${l.target.slice(-4)}`;
 
     // gradients
     dom.gradient_defs.selectAll("linearGradient").data(Object.values(data.links)).enter().append("linearGradient")
