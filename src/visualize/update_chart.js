@@ -7,7 +7,7 @@ const pad = 100;
 export default function update_chart(dom, meta, data, depth=false) {
     console.log("update_chart");
 
-    const color_index = i => d3.interpolateRainbow(1/data.max_shard * i);
+    const color_index = i => d3.interpolateRainbow(1/Math.max(data.max_shard, 1) * i);
     const gradient_name = l => `${l.source.slice(-4)}${l.target.slice(-4)}`;
 
     meta.transform = meta.transform || d3.zoomTransform(dom.svg);
@@ -50,8 +50,6 @@ export default function update_chart(dom, meta, data, depth=false) {
         .attr("y1", d => y(d.shard).toFixed(1))
         .attr("x2", d => x(d.timestamp).toFixed(1))
         .attr("y2", h-pad);
-
-
 
     // gradients
     dom.gradient_defs.selectAll("linearGradient").data(Object.values(data.links)).enter().append("linearGradient")
