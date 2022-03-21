@@ -1,6 +1,14 @@
 import './style.css'
 import visualize from "./visualize/index"
-import sample from "./sample2"
+import sample from "./sample1"
 
 console.log(ENVIRONMENT);
-visualize(ENVIRONMENT === "development" ? sample : "/api/recent_json_graph", "#chart");
+
+let data_source;
+if (ENVIRONMENT === "development") {
+    data_source = sample;
+} else {
+    data_source = "/api/recent_json_graph";
+}
+
+visualize(data_source, "#chart");
