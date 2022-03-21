@@ -24,10 +24,12 @@ export default function initialize_chart(selector) {
 
     dom.block_info = dom.container.append("div").attr("class", "info")
         .style("position", "absolute")
-        .style("top", 0)
+        .style("bottom", 0)
+        .style("left", "50%")
+        .style("transform", "translateX(-50%)")
         .style("text-anchor", "middle")
         .style("padding", "1em")
-        .text("<click_node_to_get_data>");
+        .text("");
 
     dom.axis_x = dom.svg.append("g").attr("class", "axis_x")
         .attr("transform", `translate(0, ${h-100})`)
